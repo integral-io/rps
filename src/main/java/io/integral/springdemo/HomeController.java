@@ -1,23 +1,34 @@
 package io.integral.springdemo;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class HomeController {
 
     @RequestMapping("/")
-    public @ResponseBody void greeting() {
+    public @ResponseBody
+    void greeting() {
     }
 
-    @RequestMapping("/playRound/{player1}/{player2}")
-    public @ResponseBody String playRound(@PathVariable String player1, @PathVariable String player2) {
+    @PostMapping("/playRound")
+    public @ResponseBody
+    Map<String, String> playRound(@RequestBody Map<String, Object> body) {
+        String player1 = (String) body.get("player1");
+        String player2 = (String) body.get("player2");
+        Map<String, String> results = new HashMap<>();
         if (player1.equals("scissors") && player2.equals("rock")) {
-            return "{\"result\": \"player2Wins\"}";
+            results.put("result", "player2Wins");
+        } else {
+            results.put("result", "player1Wins");
         }
-        return "{\"result\": \"player1Wins\"}";
+        return results;
     }
 
 }
