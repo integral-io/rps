@@ -1,11 +1,11 @@
 package io.integral.springdemo.Controllers;
 
 import io.integral.springdemo.Game.Game;
+import io.integral.springdemo.Game.RoundResult;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/rockPaperScissors/play")
