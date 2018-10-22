@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@RequestMapping("/rockPaperScissors/play")
 public class GameController {
 
     @RequestMapping("/")
@@ -15,7 +16,7 @@ public class GameController {
     void greeting() {
     }
 
-    @PostMapping("/playRound")
+    @PostMapping("/round")
     public @ResponseBody
     PlayRoundResult playRound(@RequestBody PlayRoundRequest body) {
         PlayRoundResult result = new PlayRoundResult();

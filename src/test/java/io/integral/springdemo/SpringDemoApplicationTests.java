@@ -26,40 +26,45 @@ public class SpringDemoApplicationTests {
     public void contextLoads() {
     }
 
+    public void assertRound(String postRequest, String expectedResult) throws Exception {
+        this.mockMvc.perform(post("/rockPaperScissors/play/round")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(postRequest))
+            .andExpect(content().json(expectedResult))
+            .andExpect(status().isOk());
+    }
+
     @Test
     public void whenRouteIsRequested_thenRouteIsFound() throws Exception {
         // //How to write an API test in Spring Boot?
         // We want to ensure our request is routed correctly
         // if we send GET /shapes
         // then return not 404
-        this.mockMvc.perform(get("/")).andExpect(status().isOk());
+        this.mockMvc.perform(get("/rockPaperScissors/play/")).andExpect(status().isOk());
     }
 
     @Test
     public void whenP1PlaysRock_andP2PlaysScissors_thenP1Wins() throws Exception {
-        this.mockMvc.perform(post("/playRound")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"player1\": \"rock\", \"player2\": \"scissors\"}"))
-                .andExpect(content().json("{\"result\": \"player1Wins\"}"))
-                .andExpect(status().isOk());
+        assertRound(
+            "{\"player1\": \"rock\", \"player2\": \"scissors\"}",
+            "{\"result\": \"player1Wins\"}"
+        );
     }
 
     @Test
     public void whenP1PlaysScissors_andP2PlaysPaper_thenP1Wins() throws Exception {
-        this.mockMvc.perform(post("/playRound")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"player1\": \"scissors\", \"player2\": \"paper\"}"))
-                .andExpect(content().json("{\"result\": \"player1Wins\"}"))
-                .andExpect(status().isOk());
+        assertRound(
+            "{\"player1\": \"scissors\", \"player2\": \"paper\"}",
+            "{\"result\": \"player1Wins\"}"
+        );
     }
 
     @Test
     public void whenP1PlaysScissors_andP2PlaysRock_thenP2Wins() throws Exception {
-        this.mockMvc.perform(post("/playRound")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"player1\": \"scissors\", \"player2\": \"rock\"}"))
-                .andExpect(content().json("{\"result\": \"player2Wins\"}"))
-                .andExpect(status().isOk());
+        assertRound(
+            "{\"player1\": \"scissors\", \"player2\": \"rock\"}",
+            "{\"result\": \"player2Wins\"}"
+        );
     }
 }
 /*
