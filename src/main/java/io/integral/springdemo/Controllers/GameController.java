@@ -1,7 +1,6 @@
 package io.integral.springdemo.Controllers;
 
 import io.integral.springdemo.Game.GameInterface;
-import io.integral.springdemo.Game.OutcomePresenterInterface;
 import io.integral.springdemo.Game.RoundResultInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +29,9 @@ public class GameController {
 
     @GetMapping("history")
     public List<Map<String, String>> getRoundHistory() {
-        OutcomePresenterInterface outcomePresenter = new OutcomePresenter();
-        game.showRoundHistory(outcomePresenter);
-        return outcomePresenter.getResults();
+        HistoryAsJson historyAsJson = new HistoryAsJson();
+        game.showRoundHistory(historyAsJson);
+        return historyAsJson.render();
     }
 
 }

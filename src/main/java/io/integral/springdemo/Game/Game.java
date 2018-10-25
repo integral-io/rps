@@ -45,9 +45,23 @@ public class Game implements GameInterface{
         return !validShapes.contains(shape);
     }
 
+    @Override
+    public void clearRounds() {
+        rounds.clear();
+    }
+
+
 
     @Override
-    public void showRoundHistory(OutcomePresenterInterface outcomePresenter) {
-        outcomePresenter.addResults(rounds);
+    public void showRoundHistory(HistoryPresenterInterface outcomePresenter) {
+        outcomePresenter.present(rounds);
+    }
+
+    public int getHistorySize() {
+        return rounds.size();
+    }
+
+    public GameResult getRoundResult(Integer round) {
+        return rounds.get(round).getResult();
     }
 }
