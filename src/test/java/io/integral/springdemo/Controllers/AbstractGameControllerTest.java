@@ -6,9 +6,11 @@ abstract public class AbstractGameControllerTest {
 
 
     protected abstract void assertRound(String requestBody, String expectedResult) throws Exception;
+    protected abstract void playRound(String requestBody) throws Exception;
+    protected abstract void assertRoundHistory(String expectedResult) throws Exception;
 
     @Test
-    public void whenP1PlaysRock_andP2PlaysScissors_thenP1Wins() throws Exception {
+    public void testThatPlayer1Wins() throws Exception {
         assertRound(
                 "{\"player1\": \"rock\", \"player2\": \"scissors\"}",
                 "{\"result\": \"player1Wins\"}"
@@ -16,18 +18,16 @@ abstract public class AbstractGameControllerTest {
     }
 
     @Test
-    public void whenP1PlaysScissors_andP2PlaysPaper_thenP1Wins() throws Exception {
-        assertRound(
-                "{\"player1\": \"scissors\", \"player2\": \"paper\"}",
-                "{\"result\": \"player1Wins\"}"
-        );
+    public void testThatARoundIsRemembered() throws Exception {
+        playRound("{\"player1\": \"rock\", \"player2\": \"scissors\"}");
+        assertRoundHistory("[{\"result\": \"player1Wins\"}]");
     }
 
     @Test
-    public void whenP1PlaysScissors_andP2PlaysRock_thenP2Wins() throws Exception {
-        assertRound(
-                "{\"player1\": \"scissors\", \"player2\": \"rock\"}",
-                "{\"result\": \"player2Wins\"}"
-        );
+    public void testThatTwoRoundsAreRemembered() throws Exception {
+        playRound("{\"player1\": \"rock\", \"player2\": \"scissors\"}");
+        playRound("{\"player1\": \"scissors\", \"player2\": \"rock\"}");
+        assertRoundHistory("[{\"result\": \"player1Wins\"}, {\"result\": \"player2Wins\"}]");
     }
+
 }
