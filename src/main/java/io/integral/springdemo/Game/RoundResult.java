@@ -1,6 +1,6 @@
 package io.integral.springdemo.Game;
 
-public interface RoundResultInterface {
+public interface RoundResult {
     String getResult();
     GameResult getGameResult();
 

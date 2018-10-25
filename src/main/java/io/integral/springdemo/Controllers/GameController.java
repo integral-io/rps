@@ -1,7 +1,8 @@
 package io.integral.springdemo.Controllers;
 
-import io.integral.springdemo.Game.GameInterface;
-import io.integral.springdemo.Game.RoundResultInterface;
+import io.integral.springdemo.Game.Game;
+import io.integral.springdemo.Game.GameRoundRepository;
+import io.integral.springdemo.Game.RoundResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,16 +13,18 @@ import java.util.Map;
 @RequestMapping("/rockPaperScissors/")
 public class GameController {
 
-    private final GameInterface game;
+    private final Game game;
+    private GameRoundRepository gameRoundRepository;
 
     @Autowired
-    public GameController(GameInterface game) {
+    public GameController(Game game, GameRoundRepository gameRoundRepository) {
         this.game = game;
+        this.gameRoundRepository = gameRoundRepository;
     }
 
     @PostMapping("play/round")
     public @ResponseBody
-    RoundResultInterface playRound(@RequestBody PlayRoundRequest body) {
+    RoundResult playRound(@RequestBody PlayRoundRequest body) {
         RoundResultPresenter result = new RoundResultPresenter();
         game.playRound(body.getPlayer1(), body.getPlayer2(), result);
         return result;

@@ -2,7 +2,7 @@ package io.integral.springdemo.Controllers;
 
 import io.integral.springdemo.Game.GameResult;
 import io.integral.springdemo.Game.GameRound;
-import io.integral.springdemo.Game.HistoryPresenterInterface;
+import io.integral.springdemo.Game.HistoryPresenter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 //@Getter
-public class HistoryAsJson implements HistoryPresenterInterface {
+public class HistoryAsJson implements HistoryPresenter {
 
     private Map<GameResult, String> gameResultMap;
     private List<GameRound> history;

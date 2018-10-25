@@ -13,11 +13,11 @@ public class GameTest {
 
     private Game game;
     private RoundResultPresenter roundResult;
-    private HistoryPresenterInterface historyPresenter;
+    private HistoryPresenter historyPresenter;
 
     @Before
     public void setup() {
-        this.game = new Game();
+        this.game = new Game(new GameRoundRepositoryFake());
         this.roundResult = new RoundResultPresenter();
         this.historyPresenter = new HistoryAsJson();
     }
@@ -62,38 +62,5 @@ public class GameTest {
         assertRound("cat", "rock", "invalidRound");
         assertRound("rock", "dog", "invalidRound");
         assertRound("cat", "dog", "invalidRound");
-    }
-
-
-    @Test
-    public void whenARoundIsPlayed_thenOutcomeMatchesRoundsPlayed() {
-        game.playRound("rock", "scissors", this.roundResult);
-        assertRoundHistory(1, 0, GameResult.PLAYER_1_WINS);
-    }
-
-    @Test
-    public void whenMoreThanARoundIsPlayed_thenAllOutcomesMatch() {
-        game.playRound("rock", "scissors", new RoundResultPresenter());
-        assertRoundHistory(1, 0, GameResult.PLAYER_1_WINS);
-
-        game.playRound("scissors", "rock", new RoundResultPresenter());
-        assertRoundHistory(2, 1, GameResult.PLAYER_2_WINS);
-        assertRoundHistory(2, 0, GameResult.PLAYER_1_WINS);
-    }
-
-    private void assertRoundHistory(Integer size, Integer round, GameResult result) {
-        game.showRoundHistory(historyPresenter);
-        assertEquals(size.intValue(), game.getHistorySize());
-        assertEquals(result, game.getRoundResult(round));
-    }
-
-    @Test
-    public void clearAllPreviousGames_thenSizeEqualsZero() {
-        RoundResultInterface r1 = new RoundResultPresenter();
-        game.playRound("rock", "scissors", r1);
-        game.showRoundHistory(historyPresenter);
-        assertTrue(game.getHistorySize() > 0);
-        game.clearRounds();
-        assertEquals(0, game.getHistorySize());
     }
 }

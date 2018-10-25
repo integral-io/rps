@@ -1,22 +1,23 @@
 package io.integral.springdemo.Game;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 @Component
-public class Game implements GameInterface{
+public class Game {
 
     private List<String> validShapes = Arrays.asList("rock", "paper", "scissors");
-    private List<GameRound> rounds;
+    private GameRoundRepository gameRoundRepository;
 
-    public Game() {
-        rounds = new ArrayList<>();
+    @Autowired
+    public Game(GameRoundRepository gameRoundRepository) {
+        this.gameRoundRepository = gameRoundRepository;
     }
 
-    public void playRound(String player1, String player2, RoundResultInterface result) {
+    public void playRound(String player1, String player2, RoundResult result) {
         if(isInvalidShape(player1) || isInvalidShape(player2)) {
             result.invalidRound();
         } else if (player2Wins(player1, player2)) {
@@ -27,8 +28,7 @@ public class Game implements GameInterface{
             result.player1Wins();
         }
 
-        // move to repo functionality
-        rounds.add(new GameRound(result.getGameResult()));
+        gameRoundRepository.addRound(result.getGameResult());
     }
 
     private boolean player2Wins(String player1, String player2) {
@@ -45,23 +45,7 @@ public class Game implements GameInterface{
         return !validShapes.contains(shape);
     }
 
-    @Override
-    public void clearRounds() {
-        rounds.clear();
-    }
-
-
-
-    @Override
-    public void showRoundHistory(HistoryPresenterInterface outcomePresenter) {
-        outcomePresenter.present(rounds);
-    }
-
-    public int getHistorySize() {
-        return rounds.size();
-    }
-
-    public GameResult getRoundResult(Integer round) {
-        return rounds.get(round).getResult();
+    public void showRoundHistory(HistoryPresenter outcomePresenter) {
+        outcomePresenter.present(gameRoundRepository.getRounds());
     }
 }

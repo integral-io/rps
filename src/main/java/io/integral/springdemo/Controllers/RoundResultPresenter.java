@@ -1,13 +1,12 @@
 package io.integral.springdemo.Controllers;
 
 import io.integral.springdemo.Game.GameResult;
-import io.integral.springdemo.Game.RoundResultInterface;
-import lombok.Getter;
+import io.integral.springdemo.Game.RoundResult;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class RoundResultPresenter implements RoundResultInterface {
+public class RoundResultPresenter implements RoundResult {
     private Map<GameResult, String> gameResultMap;
 
     public RoundResultPresenter() {
