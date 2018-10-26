@@ -1,5 +1,7 @@
 package io.integral.springdemo.Game;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,18 +10,6 @@ public class GameRoundRepositoryFake implements GameRoundRepository {
 
     public GameRoundRepositoryFake() {
         rounds = new ArrayList<>();
-    }
-
-    public void clearRounds() {
-        rounds.clear();
-    }
-
-    public int getHistorySize() {
-        return rounds.size();
-    }
-
-    public GameResult getRoundResult(Integer round) {
-        return getRounds().get(round).getResult();
     }
 
     public void addRound(GameResult gameResult) {

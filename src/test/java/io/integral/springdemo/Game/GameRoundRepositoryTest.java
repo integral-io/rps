@@ -6,13 +6,8 @@ import org.junit.Test;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class GameRoundRepositoryTest {
-    private GameRoundRepositoryFake gameRoundRepository;
-
-    @Before
-    public void setup() {
-        this.gameRoundRepository = new GameRoundRepositoryFake();
-    }
+public abstract class GameRoundRepositoryTest {
+    protected GameRoundRepository gameRoundRepository;
 
     @Test
     public void whenARoundIsPlayed_thenOutcomeMatchesRoundsPlayed() {
@@ -30,15 +25,8 @@ public class GameRoundRepositoryTest {
     }
 
     private void assertRoundHistory(Integer size, Integer round, GameResult result) {
-        assertEquals(size.intValue(), gameRoundRepository.getHistorySize());
-        assertEquals(result, gameRoundRepository.getRoundResult(round));
+        assertEquals(size.intValue(), gameRoundRepository.getRounds().size());
+        assertEquals(result, gameRoundRepository.getRounds().get(round).getResult());
     }
 
-    @Test
-    public void clearAllPreviousGames_thenSizeEqualsZero() {
-        gameRoundRepository.addRound(GameResult.PLAYER_1_WINS);
-        assertTrue(gameRoundRepository.getHistorySize() > 0);
-        gameRoundRepository.clearRounds();
-        assertEquals(0, gameRoundRepository.getHistorySize());
-    }
 }
