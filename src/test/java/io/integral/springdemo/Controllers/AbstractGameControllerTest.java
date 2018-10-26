@@ -4,9 +4,10 @@ import org.junit.Test;
 
 abstract public class AbstractGameControllerTest {
 
-
     protected abstract void assertRound(String requestBody, String expectedResult) throws Exception;
+
     protected abstract void playRound(String requestBody) throws Exception;
+
     protected abstract void assertRoundHistory(String expectedResult) throws Exception;
 
     @Test

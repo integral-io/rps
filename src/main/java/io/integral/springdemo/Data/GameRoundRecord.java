@@ -1,6 +1,6 @@
 package io.integral.springdemo.Data;
 
-import io.integral.springdemo.Game.GameResult;
+import io.integral.springdemo.Game.Round;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,15 +12,16 @@ public class GameRoundRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private GameResult result;
+    private Round.Result result;
 
-    public GameRoundRecord() {}
+    public GameRoundRecord() {
+    }
 
-    public GameRoundRecord(GameResult gameResult) {
+    public GameRoundRecord(Round.Result gameResult) {
         result = gameResult;
     }
 
-    public GameResult getResult() {
+    public Round.Result getResult() {
         return result;
     }
 

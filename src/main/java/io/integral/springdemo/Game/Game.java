@@ -1,40 +1,40 @@
 package io.integral.springdemo.Game;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import java.util.Arrays;
 import java.util.List;
 
-@Component
 public class Game {
 
     private List<String> validShapes = Arrays.asList("rock", "paper", "scissors");
-    private GameRoundRepository gameRoundRepository;
+    private RoundRepository roundRepository;
 
-    @Autowired
-    public Game(GameRoundRepository gameRoundRepository) {
-        this.gameRoundRepository = gameRoundRepository;
+    public Game(RoundRepository roundRepository) {
+        this.roundRepository = roundRepository;
     }
 
-    public void playRound(String player1, String player2, RoundResult result) {
-        if(isInvalidShape(player1) || isInvalidShape(player2)) {
+    public void playRound(String player1, String player2, RoundResultPresenter result) {
+        Round.Result roundResult;
+        if (isInvalidShape(player1) || isInvalidShape(player2)) {
             result.invalidRound();
+            roundResult = Round.Result.INVALID_ROUND;
         } else if (player2Wins(player1, player2)) {
             result.player2Wins();
-        } else if(isTie(player1, player2)){
+            roundResult = Round.Result.PLAYER_2_WINS;
+        } else if (isTie(player1, player2)) {
             result.tieGame();
+            roundResult = Round.Result.TIE;
         } else {
             result.player1Wins();
+            roundResult = Round.Result.PLAYER_1_WINS;
         }
 
-        gameRoundRepository.addRound(result.getGameResult());
+        roundRepository.addRound(roundResult);
     }
 
     private boolean player2Wins(String player1, String player2) {
         return player1.equals("scissors") && player2.equals("rock") ||
-            player1.equals("paper") && player2.equals("scissors") ||
-            player1.equals("rock") && player2.equals("paper");
+                player1.equals("paper") && player2.equals("scissors") ||
+                player1.equals("rock") && player2.equals("paper");
     }
 
     private boolean isTie(String player1, String player2) {
@@ -46,6 +46,11 @@ public class Game {
     }
 
     public void showRoundHistory(HistoryPresenter outcomePresenter) {
-        outcomePresenter.present(gameRoundRepository.getRounds());
+        List<Round> rounds = roundRepository.getRounds();
+        if (rounds.isEmpty()) {
+            outcomePresenter.presentEmptyHistory();
+        } else {
+            outcomePresenter.present(roundRepository.getRounds());
+        }
     }
 }

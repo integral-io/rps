@@ -1,30 +1,29 @@
 package io.integral.springdemo.Game;
 
+import io.integral.springdemo.Adapters.RoundRepositoryFake;
 import io.integral.springdemo.Controllers.HistoryAsJson;
-import io.integral.springdemo.Controllers.RoundResultPresenter;
+import io.integral.springdemo.Controllers.RoundResultAsJson;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 public class GameTest {
 
-    private Game game;
-    private RoundResultPresenter roundResult;
-    private HistoryPresenter historyPresenter;
+    protected Game game;
+    protected RoundResultAsJson roundResult;
+    protected HistoryPresenter historyPresenter;
 
     @Before
     public void setup() {
-        this.game = new Game(new GameRoundRepositoryFake());
-        this.roundResult = new RoundResultPresenter();
+        this.game = new Game(new RoundRepositoryFake());
+        this.roundResult = new RoundResultAsJson();
         this.historyPresenter = new HistoryAsJson();
     }
 
     private void assertRound(String player1, String player2, String expectedResult) {
         game.playRound(player1, player2, roundResult);
-        assertEquals(expectedResult, roundResult.getResult());
+        assertEquals(expectedResult, roundResult.render().get("result"));
     }
 
     @Test

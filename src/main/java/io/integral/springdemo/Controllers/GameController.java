@@ -1,9 +1,8 @@
 package io.integral.springdemo.Controllers;
 
 import io.integral.springdemo.Game.Game;
-import io.integral.springdemo.Game.GameRoundRepository;
-import io.integral.springdemo.Game.RoundResult;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.integral.springdemo.Game.RoundRepository;
+import io.integral.springdemo.Game.RoundResultPresenter;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,20 +13,16 @@ import java.util.Map;
 public class GameController {
 
     private final Game game;
-    private GameRoundRepository gameRoundRepository;
 
-    @Autowired
-    public GameController(Game game, GameRoundRepository gameRoundRepository) {
-        this.game = game;
-        this.gameRoundRepository = gameRoundRepository;
+    public GameController(RoundRepository roundRepository) {
+        this.game = new Game(roundRepository);
     }
 
     @PostMapping("play/round")
-    public @ResponseBody
-    RoundResult playRound(@RequestBody PlayRoundRequest body) {
-        RoundResultPresenter result = new RoundResultPresenter();
-        game.playRound(body.getPlayer1(), body.getPlayer2(), result);
-        return result;
+    public Map<String, String> playRound(@RequestBody PlayRoundRequest body) {
+        RoundResultAsJson roundResultAsJson = new RoundResultAsJson();
+        game.playRound(body.getPlayer1(), body.getPlayer2(), roundResultAsJson);
+        return roundResultAsJson.render();
     }
 
     @GetMapping("history")
